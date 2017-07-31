@@ -10,7 +10,7 @@ Centre, Sydney, Australia: PMLR), pp. 3987–3995.
 http://proceedings.mlr.press/v70/zenke17a.html
 
 
-BibTeX:
+## BibTeX
 ```
 @InProceedings{pmlr-v70-zenke17a,
 title = 	 {Continual Learning Through Synaptic Intelligence},
