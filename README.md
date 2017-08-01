@@ -2,14 +2,14 @@
 
 This repository contains code to reproduce the key findings of:
 
-Zenke, F.*, Poole, B.*, and Ganguli, S. (2017). Continual Learning Through
+Zenke, F.<sup>1</sup>, Poole, B.<sup>1</sup>, and Ganguli, S. (2017). Continual Learning Through
 Synaptic Intelligence. In Proceedings of the 34th International Conference on
 Machine Learning, D. Precup, and Y.W. Teh, eds. (International Convention
 Centre, Sydney, Australia: PMLR), pp. 3987–3995.
 
 http://proceedings.mlr.press/v70/zenke17a.html
 
-*) Equal contribution
+1) Equal contribution
 
 ## BibTeX
 ```
