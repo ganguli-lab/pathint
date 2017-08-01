@@ -9,7 +9,7 @@ Centre, Sydney, Australia: PMLR), pp. 3987–3995.
 
 http://proceedings.mlr.press/v70/zenke17a.html
 
-1) Equal contribution
+<sup>1</sup>) Equal contribution
 
 ## BibTeX
 ```
