@@ -1,3 +1,14 @@
+# Copyright (c) 2017 Ben Poole & Friedemann Zenke
+# MIT License -- see LICENSE for details
+# 
+# This file is part of the code to reproduce the core results of:
+# Zenke, F., Poole, B., and Ganguli, S. (2017). Continual Learning Through
+# Synaptic Intelligence. In Proceedings of the 34th International Conference on
+# Machine Learning, D. Precup, and Y.W. Teh, eds. (International Convention
+# Centre, Sydney, Australia: PMLR), pp. 3987–3995.
+# http://proceedings.mlr.press/v70/zenke17a.html
+#
+
 # Keras-specific functions and utils
 from keras.callbacks import Callback
 from keras.models import Model
@@ -15,27 +26,6 @@ class LossHistory(Callback):
         self.losses.append(logs.get('loss'))
         self.regs.append(K.get_session().run(self.model.optimizer.regularizer))
 
-# Removed, use oopt.update_task_vars() instead
-#class TaskConsolidation(Callback):
-#    """Callback used to run task updates after each call to fit"""
-#    def on_train_end(self, logs={}):
-#        K.get_session().run(self.model.optimizer.task_op)
-
-
-def _to_tensor(x, dtype):
-    """Convert the input `x` to a tensor of type `dtype`.
-    # Arguments
-        x: An object to be converted (numpy array, list, tensors).
-        dtype: The destination type.
-    # Returns
-        A tensor.
-
-	Code copied here from Keras
-    """
-    x = tf.convert_to_tensor(x)
-    if x.dtype != dtype:
-        x = tf.cast(x, dtype)
-    return x
 
 # Create a callback that tracks FisherInformation
 from keras.models import Model
@@ -62,7 +52,10 @@ def compute_fishers(model):
             # Clips output 
             # https://github.com/fchollet/keras/blob/master/keras/backend/tensorflow_backend.py#L2743
             output = out[:, idx]
-            epsilon = _to_tensor(K.epsilon(), output.dtype.base_dtype)
+            epsilon = tf.convert_to_tensor(x)
+            if epsilon.dtype != output.dtype.base_dtype:
+                epsilon = tf.cast(epsilon, output.dtype.base_dtype)
+
             output = tf.clip_by_value(output, epsilon, 1. - epsilon)
             y = K.log(output)
             # From the post-nonlinearity outputs of each layer, we walk back up through the graph
@@ -115,16 +108,3 @@ def compute_fishers(model):
     zero_fishers = tf.group(*[tf.assign(avg_f, 0.0 * avg_f) for avg_f in avg_fishers])
     return fishers, avg_fishers, update_fishers, zero_fishers
 
-#fishers, avg_fishers, update_fishers, zero_fishers = compute_fishers(model)
-
-#sess.run(tf.global_variables_initializer())
-#sess.run(zero_fishers)
-
-
-# Loop over batches of data
-#dataset = datasets[0][0]
-#n_batch = len(dataset) / batch_size
-#
-#sess.run(zero_fishers)
-#for i in trange(n_batch):
-#    sess.run(update_fishers, {model.input: dataset[i * batch_size: (i + 1) * batch_size]})

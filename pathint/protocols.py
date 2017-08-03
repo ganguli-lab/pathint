@@ -1,3 +1,13 @@
+# Copyright (c) 2017 Ben Poole & Friedemann Zenke
+# MIT License -- see LICENSE for details
+# 
+# This file is part of the code to reproduce the core results of:
+# Zenke, F., Poole, B., and Ganguli, S. (2017). Continual Learning Through
+# Synaptic Intelligence. In Proceedings of the 34th International Conference on
+# Machine Learning, D. Precup, and Y.W. Teh, eds. (International Convention
+# Centre, Sydney, Australia: PMLR), pp. 3987–3995.
+# http://proceedings.mlr.press/v70/zenke17a.html
+#
 from pathint.utils import ema
 from pathint.regularizers import quadratic_regularizer, get_power_regularizer
 from pathint.keras_utils import compute_fishers
