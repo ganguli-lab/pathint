@@ -40,7 +40,7 @@ We have tested this code with the following configuration:
 * Tensorflow 1.2.1
 * Keras 2.0.5
 
-Update: Since some recent Keras update seems to have broken our code, here is a quick fix as to how to run with the old compatible Keras version.
+*Update:* Since some recent Keras update seems to have broken our code, here is a quick fix as to how to run with the old compatible Keras version
 using virtualenv (https://virtualenv.pypa.io).
 
 ```
