@@ -1,6 +1,6 @@
 # Continual Learning Through Synaptic Intelligence
 
-This repository contains code to reproduce the key findings of:
+This repository contains code to reproduce the key findings of our path integral approach to prevent catastrophic forgetting in continual learning.
 
 Zenke, F.<sup>1</sup>, Poole, B.<sup>1</sup>, and Ganguli, S. (2017). Continual Learning Through
 Synaptic Intelligence. In Proceedings of the 34th International Conference on
@@ -40,12 +40,13 @@ We have tested this code with the following configuration:
 * Tensorflow 1.2.1
 * Keras 2.0.5
 
-*Update:* Since some recent Keras update seems to have broken our code, here is a quick fix as to how to run with the old compatible Keras version
+
+**Update:** Since some recent Keras update seems to have broken our code, here is a quick fix as to how to run with the old compatible Keras version
 using virtualenv (https://virtualenv.pypa.io).
 
 ```
 virtualenv -p python3 env
 source env/bin/activate
-pip3 nstall -vI keras==2.0.5
+pip3 install -vI keras==2.0.5
 pip3 install jupyter matplotlib numpy tensorflow-gpu tqdm seaborn
 ```
