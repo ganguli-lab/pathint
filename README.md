@@ -33,16 +33,26 @@ url = 	 {http://proceedings.mlr.press/v70/zenke17a.html},
 
 ## Requirements
 
-We have tested this code with the following configuration:
+We have tested this maintenance release (v1.1) with the following configuration:
+
+* Python 3.5.2
+* Jupyter 4.4.0
+* Tensorflow 1.10
+* Keras 2.2.2
+
+Kudos to Mitra (https://github.com/MitraDarja) for making our code conform with Keras 2.2.2!
+
+
+### Earlier releases 
+
+For the original release (v1.0) we used the following configuration of the libraries which were available at the time:
 
 * Python 3.5.2
 * Jupyter 4.3.0
 * Tensorflow 1.2.1
 * Keras 2.0.5
 
-
-**Update:** Since some recent Keras update seems to have broken our code, here is a quick fix as to how to run with the old compatible Keras version
-using virtualenv (https://virtualenv.pypa.io).
+To revert to such a environment we suggest using virtualenv (https://virtualenv.pypa.io):
 
 ```
 virtualenv -p python3 env
