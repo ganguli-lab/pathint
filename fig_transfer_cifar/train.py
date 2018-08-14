@@ -153,7 +153,7 @@ opt = Adam(lr=learning_rate, beta_1=0.9, beta_2=0.999)
 # opt = SGD(1e-3)
 oopt = KOOptimizer(opt, model=model, **protocol)
 model.compile(loss='categorical_crossentropy', optimizer=oopt, metrics=['accuracy'])
-model.model._make_train_function()
+model._make_train_function()
 
 history = LossHistory()
 callbacks = [history]

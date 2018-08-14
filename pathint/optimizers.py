@@ -102,8 +102,8 @@ class KOOptimizer(Optimizer):
     def set_nb_data(self, nb):
         K.set_value(self.nb_data, nb)
 
-    def get_updates(self, weights, constraints, initial_loss, model=None):
-        self.weights = weights
+    def get_updates(self, params,loss,model=None):
+        self.weights = params
         # Allocate variables
         with tf.variable_scope("KOOptimizer"):
             self._allocate_vars(self.names)
@@ -111,19 +111,19 @@ class KOOptimizer(Optimizer):
         #grads = self.get_gradients(loss, params)
 
         # Compute loss and gradients
-        self.regularizer = 0.0 if self.regularizer_fn is None else self.regularizer_fn(weights, self.vars)
-        self.initial_loss = initial_loss
-        self.loss = initial_loss + self.lam * self.regularizer
+        self.regularizer = 0.0 if self.regularizer_fn is None else self.regularizer_fn(params, self.vars)
+        self.initial_loss = loss
+        self.loss = loss + self.lam * self.regularizer
         with tf.variable_scope("wrapped_optimizer"):
-            self._weight_update_op, self._grads, self._deltas = compute_updates(self.opt, self.loss, weights)
+            self._weight_update_op, self._grads, self._deltas = compute_updates(self.opt, self.loss, params)
 
         wrapped_opt_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, "wrapped_optimizer")
         self.init_opt_vars = tf.variables_initializer(wrapped_opt_vars)
 
-        self.vars['unreg_grads'] = dict(zip(weights, tf.gradients(self.initial_loss, weights)))
+        self.vars['unreg_grads'] = dict(zip(params, tf.gradients(self.initial_loss, params)))
         # Compute updates
-        self.vars['grads'] = dict(zip(weights, self._grads))
-        self.vars['deltas'] = dict(zip(weights, self._deltas))
+        self.vars['grads'] = dict(zip(params, self._grads))
+        self.vars['deltas'] = dict(zip(params, self._deltas))
         # Keep a pointer to self in vars so we can use it in the updates
         self.vars['oopt'] = self
         # Keep number of data samples handy for normalization purposes
@@ -155,7 +155,7 @@ class KOOptimizer(Optimizer):
 
         def _var_update(vars, update_fn):
             updates = []
-            for w in weights:
+            for w in params:
                 updates.append(tf.assign(vars[w], update_fn(self.vars, w, vars[w])))
             return tf.group(*updates)
 
@@ -176,7 +176,7 @@ class KOOptimizer(Optimizer):
         update_ops = []
         for name, metric_fn in self.task_metrics.items():
             metric = metric_fn(self)
-            for w in weights:
+            for w in params:
                 reset_ops.append(tf.assign(self.vars[name][w], 0*self.vars[name][w]))
                 update_ops.append(tf.assign_add(self.vars[name][w], metric[w]))
         self._reset_task_metrics_op = tf.group(*reset_ops)
@@ -223,8 +223,8 @@ class KOOptimizer(Optimizer):
         sess = K.get_session()
         sess.run(self._reset_task_metrics_op)
         for i in range(n_batch):
-            xi, yi, sample_weights = self.model.model._standardize_user_data(X[i * batch_size:(i+1) * batch_size], y[i*batch_size:(i+1)*batch_size], batch_size=batch_size)
-            sess.run(self._update_task_metrics_op, {self.model.input:xi[0], self.model.model.targets[0]:yi[0], self.model.model.sample_weights[0]:sample_weights[0]})
+            xi, yi, sample_weights = self.model._standardize_user_data(X[i * batch_size:(i+1) * batch_size], y[i*batch_size:(i+1)*batch_size], batch_size=batch_size)
+            sess.run(self._update_task_metrics_op, {self.model.input:xi[0], self.model.targets[0]:yi[0], self.model.sample_weights[0]:sample_weights[0]})
 
 
     def reset_optimizer(self):
